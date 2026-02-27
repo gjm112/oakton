@@ -45,16 +45,53 @@ library(tidyverse)
 ##########################################
 Teams %>% View()
 
-#Filter
+#filter
 Teams %>% filter(franchID %in% c("CHC","CHW")) 
 Teams %>% filter(franchID %in% c("CHC","CHW") & yearID >= 2000) 
 
-#Select
-Teams %>% filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+#select
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L)
+
+#mutate
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L) %>% 
+  mutate(winpct = W/(W+L))
+
+#arrange
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L) %>% 
+  mutate(winpct = W/(W+L)) %>% 
+  arrange(winpct)
+
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L) %>% 
+  mutate(winpct = W/(W+L)) %>% 
+  arrange(desc(winpct))
+
+#group_by and summarize
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L) %>% 
+  group_by(franchID) %>% 
+  summarize(W = sum(W), L = sum(L), n = n())
 
 
-Teams %>% filter(franchID %in% c("CHC","CHW")) 
+Teams %>%
+  filter(franchID %in% c("CHC","CHW") & yearID >= 2000) %>% 
+  select(franchID, yearID, W, L) %>% 
+  group_by(franchID) %>% 
+  summarize(W = sum(W), L = sum(L), n = n()) %>% 
+  mutate(winpct = W/(W+L)) 
 
 ##########################################
 ## Data Visualization
 ##########################################
+
+
+
+
